@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Format.xsd">
+<Configuration xsi:noNamespaceSchemaLocation="Format.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ViewDefinitions>
     <View>
       <Name>Medium</Name>
