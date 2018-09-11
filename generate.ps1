@@ -20,8 +20,12 @@ $doc.AppendChild($doc.CreateXmlDeclaration('1.0', 'UTF-8', $null)) | Out-Null
 $root = $doc.CreateNode('element', $xs, 'schema', $xmlSchemaNamespace)
 $root.SetAttribute('attributeFormDefault', 'unqualified')
 $root.SetAttribute('elementFormDefault', 'qualified')
-# $root.SetAttribute('xsi:schemaLocation', 'http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd')
 
+# Make schema a schema instance itself
+$xmlSchemaInstanceNamespace = 'http://www.w3.org/2001/XMLSchema-instance'
+$attribute = $doc.CreateAttribute('xsi', 'schemaLocation', $xmlSchemaInstanceNamespace);
+$attribute.InnerText = 'http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd'
+$root.SetAttributeNode($attribute) | Out-Null
 $doc.AppendChild($root) | Out-Null
 
 # Manual map from element name to content type (if scalar)
