@@ -37,6 +37,7 @@ $types = @{
     ColumnNumber      = 'xs:integer'
     Width             = 'xs:integer'
     LeftIndent        = 'xs:integer'
+    FirstLineIndent   = 'xs:integer'
     FirstLineHanging  = 'xs:integer'
 }
 

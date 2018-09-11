@@ -167,11 +167,10 @@
       <xs:documentation>Specifies how many characters the first line of data is shifted to the left. This element is used when defining how a new group of objects is displayed.</xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="FirstLineIndent">
+  <xs:element name="FirstLineIndent" type="xs:integer">
     <xs:annotation>
       <xs:documentation>Specifies how many characters the first line of data is shifted to the right. This element is used when defining controls that can be used by a view.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
   </xs:element>
   <xs:element name="FormatString" type="xs:string">
     <xs:annotation>
