@@ -1,142 +1,511 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="TypeName" type="xs:string" />
-  <xs:element name="Label" type="xs:string" />
-  <xs:element name="ScriptBlock" type="xs:string" />
-  <xs:element name="PropertyName" type="xs:string" />
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Alignment">
+    <xs:annotation>
+      <xs:documentation>Defines how the data in a column header is displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="AutoSize">
+    <xs:annotation>
+      <xs:documentation>Specifies whether the column size and the number of columns are adjusted based on the size of the data.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="ColumnNumber" type="xs:integer">
+    <xs:annotation>
+      <xs:documentation>Specifies the number of columns displayed in the wide view.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Configuration">
+    <xs:annotation>
+      <xs:documentation>Represents the top-level element of a formatting file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="Controls" />
+      <xs:element ref="DefaultSettings" />
+      <xs:element ref="SelectionSets" />
+      <xs:element ref="ViewDefinitions" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Control">
+    <xs:annotation>
+      <xs:documentation>Defines a common control that can be used by all the views of the formatting file and the name that is used to reference the control.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomControl" />
+      <xs:element ref="Name" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Controls">
+    <xs:annotation>
+      <xs:documentation>Defines the common controls that can be used by all views of the formatting file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="Control" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CustomControl">
+    <xs:annotation>
+      <xs:documentation>Defines the custom control that displays the new group.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomEntries" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CustomControlName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies the name of a common control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="CustomEntries">
+    <xs:annotation>
+      <xs:documentation>Provides the definitions of a common control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomEntry" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CustomEntry">
+    <xs:annotation>
+      <xs:documentation>Provides a definition of the common control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomItem" />
+      <xs:element ref="EntrySelectedBy" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CustomItem">
+    <xs:annotation>
+      <xs:documentation>Defines what data is displayed by the custom control view and how it is displayed. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="ExpressionBinding" />
+      <xs:element ref="Frame" />
+      <xs:element ref="NewLine" />
+      <xs:element ref="Text" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DefaultSettings">
+    <xs:annotation>
+      <xs:documentation>Defines common settings that apply to all the views of the formatting file. Common settings include displaying errors, wrapping text in tables, defining how collections are expanded, and more.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="DisplayError" />
+      <xs:element ref="EnumerableExpansions" />
+      <xs:element ref="PropertyCountForTable" />
+      <xs:element ref="ShowError" />
+      <xs:element ref="WrapTables" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DisplayError">
+    <xs:annotation>
+      <xs:documentation>Specifies that the string #ERR is displayed when an error occurs displaying a piece of data.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="EntrySelectedBy">
+    <xs:annotation>
+      <xs:documentation>Defines the .NET Framework types that use this custom entry or the condition that must exist for this entry to be used.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="SelectionCondition" />
+      <xs:element ref="SelectionSetName" />
+      <xs:element ref="TypeName" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EnumerableExpansion">
+    <xs:annotation>
+      <xs:documentation>Defines how specific .NET Framework collection objects are expanded when they are displayed in a view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="EntrySelectedBy" />
+      <xs:element ref="Expand" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EnumerableExpansions">
+    <xs:annotation>
+      <xs:documentation>Defines how .NET Framework collection objects are expanded when they are displayed in a view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="EnumerableExpansion" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EnumerateCollection">
+    <xs:annotation>
+      <xs:documentation>Specified that the elements of collections are displayed by the control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="Expand">
+    <xs:annotation>
+      <xs:documentation>Specifies how the collection object is expanded for this definition.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="EnumOnly" />
+        <xs:enumeration value="CoreOnly" />
+        <xs:enumeration value="Both" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="ExpressionBinding">
+    <xs:annotation>
+      <xs:documentation>Defines the data that is displayed by the control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomControl" />
+      <xs:element ref="CustomControlName" />
+      <xs:element ref="EnumerateCollection" />
+      <xs:element ref="ItemSelectionCondition" />
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FirstLineHanging" type="xs:integer">
+    <xs:annotation>
+      <xs:documentation>Specifies how many characters the first line of data is shifted to the left. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="FirstLineIndent">
+    <xs:annotation>
+      <xs:documentation>Specifies how many characters the first line of data is shifted to the right. This element is used when defining controls that can be used by a view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="FormatString" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies a format pattern that defines how the property or script value is displayed.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Frame">
+    <xs:annotation>
+      <xs:documentation>Defines how the data is displayed, such as shifting the data to the left or right. This element is used when defining a custom control view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomItem" />
+      <xs:element ref="FirstLineHanging" />
+      <xs:element ref="FirstLineIndent" />
+      <xs:element ref="LeftIndent" />
+      <xs:element ref="RightIndent" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GroupBy">
+    <xs:annotation>
+      <xs:documentation>Defines how a new group of objects is displayed. This element is used when defining a table, list, wide, or custom control view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="CustomControl" />
+      <xs:element ref="CustomControlName" />
+      <xs:element ref="Label" />
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HideTableHeaders">
+    <xs:annotation>
+      <xs:documentation>Specifies that the headers of the table are not displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
   <xs:element name="ItemSelectionCondition">
+    <xs:annotation>
+      <xs:documentation>Defines the condition that must exist for this control to be used. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="PropertyName" />
-      </xs:sequence>
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
     </xs:complexType>
   </xs:element>
-  <xs:element name="ListItem">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="Label" />
-        <xs:element ref="ScriptBlock" minOccurs="0" />
-        <xs:element ref="PropertyName" minOccurs="0" />
-        <xs:element ref="ItemSelectionCondition" minOccurs="0" />
-      </xs:sequence>
-    </xs:complexType>
+  <xs:element name="Label" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies the label that is displayed to the left of the property or script value in the row.</xs:documentation>
+    </xs:annotation>
   </xs:element>
-  <xs:element name="ListItems">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="ListItem" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-    </xs:complexType>
+  <xs:element name="LeftIndent" type="xs:integer">
+    <xs:annotation>
+      <xs:documentation>Specifies how many characters the data is shifted away from the left margin. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
   </xs:element>
-  <xs:element name="ListEntry">
+  <xs:element name="ListControl">
+    <xs:annotation>
+      <xs:documentation>Defines a list format for the view.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="ListItems" />
-      </xs:sequence>
+      <xs:element ref="ListEntries" />
     </xs:complexType>
   </xs:element>
   <xs:element name="ListEntries">
+    <xs:annotation>
+      <xs:documentation>Provides the definitions of the list view. The list view must specify one or more definitions.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="ListEntry" />
-      </xs:sequence>
+      <xs:element ref="ListEntry" />
     </xs:complexType>
   </xs:element>
-  <xs:element name="Name" type="xs:string" />
-  <xs:element name="ViewSelectedBy">
+  <xs:element name="ListEntry">
+    <xs:annotation>
+      <xs:documentation>Provides a definition of the list view.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="TypeName" />
-      </xs:sequence>
+      <xs:element ref="EntrySelectedBy" />
+      <xs:element ref="ListItems" />
     </xs:complexType>
   </xs:element>
-  <xs:element name="ListControl">
+  <xs:element name="ListItem">
+    <xs:annotation>
+      <xs:documentation>Defines the property or script whose value is displayed in a row of the list view.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="ListEntries" />
-      </xs:sequence>
+      <xs:element ref="FormatString" />
+      <xs:element ref="ItemSelectionCondition" />
+      <xs:element ref="Label" />
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
     </xs:complexType>
+  </xs:element>
+  <xs:element name="ListItems">
+    <xs:annotation>
+      <xs:documentation>Defines the properties and scripts whose values are displayed in the rows of the list view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="ListItem" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Name" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies the name of the control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="NewLine">
+    <xs:annotation>
+      <xs:documentation>Adds a blank line to the display of the control. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="PropertyName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies the .NET Framework property that triggers the condition. When this property is present or when it evaluates to `true`, the condition is met, and the definition is used. This element is used when defining a custom control view.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="RightIndent">
+    <xs:annotation>
+      <xs:documentation>Specifies how many characters the data is shifted away from the right margin. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="ScriptBlock" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies the script that triggers the condition. When this script is evaluated to `true`, the condition is met, and the definition is used. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="SelectionCondition">
+    <xs:annotation>
+      <xs:documentation>Defines the condition that must exist for this definition to be used. There is no limit to the number of selection conditions that can be specified for a wide entry definition.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
+      <xs:element ref="SelectionSetName" />
+      <xs:element ref="TypeName" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SelectionSet">
+    <xs:annotation>
+      <xs:documentation>Defines a set of .NET Framework objects that can be referenced by the name of the set.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="Name" />
+      <xs:element ref="Types" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SelectionSetName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies the set of .NET Framework types that trigger the condition. When any of the types in this set are present, the condition is met.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="SelectionSets">
+    <xs:annotation>
+      <xs:documentation>Defines the common sets of .NET Framework objects that can be used by all views of the formatting file. The views and controls of the formatting file can reference the complete set of objects by using only the name of the selection set.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="SelectionSet" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ShowError">
+    <xs:annotation>
+      <xs:documentation>Specifies that the full error record is displayed when an error occurs while displaying a piece of data.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
   </xs:element>
   <xs:element name="TableColumnHeader">
+    <xs:annotation>
+      <xs:documentation>Defines the label, the width of the column, and the alignment of the label for a column of the table.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="Label" />
-      </xs:sequence>
+      <xs:element ref="Alignment" />
+      <xs:element ref="Label" />
+      <xs:element ref="Width" />
     </xs:complexType>
   </xs:element>
   <xs:element name="TableColumnItem">
+    <xs:annotation>
+      <xs:documentation>Defines the property or script whose value is displayed in the column of the row.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="ScriptBlock" minOccurs="0" />
-        <xs:element ref="PropertyName" minOccurs="0" />
-      </xs:sequence>
+      <xs:element ref="Alignment" />
+      <xs:element ref="FormatString" />
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
     </xs:complexType>
   </xs:element>
   <xs:element name="TableColumnItems">
+    <xs:annotation>
+      <xs:documentation>Defines the properties or scripts whose values are displayed in a row.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="TableColumnItem" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="TableRowEntry">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="TableColumnItems" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="TableHeaders">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="TableColumnHeader" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="TableRowEntries">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="TableRowEntry" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="AutoSize">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="TableHeaders" />
-        <xs:element ref="TableRowEntries" />
-      </xs:sequence>
+      <xs:element ref="TableColumnItem" />
     </xs:complexType>
   </xs:element>
   <xs:element name="TableControl">
+    <xs:annotation>
+      <xs:documentation>Defines a table format for a view.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="AutoSize" />
-      </xs:sequence>
+      <xs:element ref="AutoSize" />
+      <xs:element ref="HideTableHeaders" />
+      <xs:element ref="TableHeaders" />
+      <xs:element ref="TableRowEntries" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TableHeaders">
+    <xs:annotation>
+      <xs:documentation>Defines the headers for the columns of a table.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="TableColumnHeader" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TableRowEntries">
+    <xs:annotation>
+      <xs:documentation>Defines the rows of the table.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="TableRowEntry" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TableRowEntry">
+    <xs:annotation>
+      <xs:documentation>Defines the data that is displayed in a row of the table.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="EntrySelectedBy" />
+      <xs:element ref="TableColumnItems" />
+      <xs:element ref="Wrap" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Text" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies text that is added to the data that is displayed by the control, such as a label, brackets to enclose the data, and spaces to indent the data. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="TypeName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies a .NET Framework type that triggers the condition. This element is used when defining how a new group of objects is displayed.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Types">
+    <xs:annotation>
+      <xs:documentation>Defines the .NET Framework objects that are in the selection set.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="TypeName" />
     </xs:complexType>
   </xs:element>
   <xs:element name="View">
+    <xs:annotation>
+      <xs:documentation>Defines a view that displays one or more .NET Framework objects. There is no limit to the number of views that can be defined in a formatting file.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="Name" />
-        <xs:element ref="ViewSelectedBy" />
-        <xs:element ref="ListControl" minOccurs="0" />
-        <xs:element ref="TableControl" minOccurs="0" />
-      </xs:sequence>
+      <xs:element ref="Controls" />
+      <xs:element ref="CustomControl" />
+      <xs:element ref="GroupBy" />
+      <xs:element ref="ListControl" />
+      <xs:element ref="Name" />
+      <xs:element ref="TableControl" />
+      <xs:element ref="ViewSelectedBy" />
+      <xs:element ref="WideControl" />
     </xs:complexType>
   </xs:element>
   <xs:element name="ViewDefinitions">
+    <xs:annotation>
+      <xs:documentation>Defines the views used to display .NET Framework objects. These views can display the properties and script values of an object  in a table format, list format, wide format, and custom control format.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="View" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
+      <xs:element ref="View" />
     </xs:complexType>
   </xs:element>
-  <xs:element name="Configuration">
+  <xs:element name="ViewSelectedBy">
+    <xs:annotation>
+      <xs:documentation>Defines the .NET Framework objects that are displayed by the view. Each view must specify at least one .NET Framework object.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="ViewDefinitions" />
-      </xs:sequence>
+      <xs:element ref="SelectionSetName" />
+      <xs:element ref="TypeName" />
     </xs:complexType>
+  </xs:element>
+  <xs:element name="WideControl">
+    <xs:annotation>
+      <xs:documentation>Defines a wide (single value) list format for the view. This view displays a single property value or script value for each object.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="AutoSize" />
+      <xs:element ref="ColumnNumber" />
+      <xs:element ref="WideEntries" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WideEntries">
+    <xs:annotation>
+      <xs:documentation>Provides the definitions of the wide view. The wide view must specify one or more definitions.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="WideEntry" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WideEntry">
+    <xs:annotation>
+      <xs:documentation>Provides a definition of the wide view.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="EntrySelectedBy" />
+      <xs:element ref="WideItem" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WideItem">
+    <xs:annotation>
+      <xs:documentation>Defines the property or script whose value is displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:element ref="FormatString" />
+      <xs:element ref="PropertyName" />
+      <xs:element ref="ScriptBlock" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Width" type="xs:integer">
+    <xs:annotation>
+      <xs:documentation>Defines the width (in characters) of a column.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Wrap">
+    <xs:annotation>
+      <xs:documentation>Specifies that text that exceeds the column width is displayed on the next line. By default, text that exceeds the column width is truncated.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="WrapTables">
+    <xs:annotation>
+      <xs:documentation>Specifies that data in a table cell is moved to the next line if the data is longer than the width of the column.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType />
   </xs:element>
 </xs:schema>
