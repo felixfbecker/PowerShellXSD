@@ -126,28 +126,27 @@
         <TypeName>PowerGit.CommitInfo</TypeName>
       </ViewSelectedBy>
       <TableControl>
-        <AutoSize>
-          <TableHeaders>
-            <TableColumnHeader>
-              <Label>Sha</Label>
-            </TableColumnHeader>
-            <TableColumnHeader>
-              <Label>Message</Label>
-            </TableColumnHeader>
-          </TableHeaders>
-          <TableRowEntries>
-            <TableRowEntry>
-              <TableColumnItems>
-                <TableColumnItem>
-                  <ScriptBlock>"`e[33m$($_.Sha.Substring(0, 7))`e[0m"</ScriptBlock>
-                </TableColumnItem>
-                <TableColumnItem>
-                  <PropertyName>MessageShort</PropertyName>
-                </TableColumnItem>
-              </TableColumnItems>
-            </TableRowEntry>
-          </TableRowEntries>
-        </AutoSize>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Sha</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Message</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock>"`e[33m$($_.Sha.Substring(0, 7))`e[0m"</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>MessageShort</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
       </TableControl>
     </View>
   </ViewDefinitions>
