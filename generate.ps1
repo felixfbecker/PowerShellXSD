@@ -2,6 +2,9 @@ using namespace System.Xml
 using namespace System.Text
 using namespace System.IO
 
+[CmdletBinding()]
+param()
+
 if (-not (Test-Path "$PSScriptRoot/PowerShell-Docs")) {
     throw "PowerShell-Docs git submodule not found. Run git submodule update --init to download"
 }
@@ -41,78 +44,161 @@ $types = @{
     FirstLineHanging  = 'xs:integer'
 }
 
+$UNBOUNDED = 'unbounded'
+
+# We can get minOccurs from required/optional hints, but we don't know about maxOccurs
+$maxOccurs = @{
+    Alignment              = 1
+    AutoSize               = 1
+    ColumnNumber           = 1
+    Configuration          = 1
+    Control                = $UNBOUNDED
+    Controls               = 1
+    CustomControl          = 1
+    CustomControlName      = 1
+    CustomEntries          = 1
+    CustomEntry            = $UNBOUNDED
+    CustomItem             = $UNBOUNDED
+    DefaultSettings        = 1
+    DisplayError           = 1
+    EntrySelectedBy        = 1
+    EnumerableExpansion    = 1
+    EnumerableExpansions   = 1
+    EnumerateCollection    = 1
+    Expand                 = 1
+    ExpressionBinding      = 1
+    FirstLineHanging       = 1
+    FirstLineIndent        = 1
+    FormatString           = 1
+    Frame                  = $UNBOUNDED
+    GroupBy                = 1
+    HideTableHeaders       = 1
+    ItemSelectionCondition = 1
+    Label                  = 1
+    LeftIndent             = 1
+    ListControl            = 1
+    ListEntries            = 1
+    ListEntry              = $UNBOUNDED
+    ListItem               = $UNBOUNDED
+    ListItems              = 1
+    Name                   = 1
+    NewLine                = $UNBOUNDED
+    PropertyCountForTable  = 1 # Not in the index, but mentioned in DefaultSettings element
+    PropertyName           = 1
+    RightIndent            = 1
+    ScriptBlock            = 1
+    SelectionCondition     = 1
+    SelectionSet           = 1
+    SelectionSetName       = 1
+    SelectionSets          = 1
+    ShowError              = 1
+    TableColumnHeader      = $UNBOUNDED
+    TableColumnItem        = $UNBOUNDED
+    TableColumnItems       = 1
+    TableControl           = 1
+    TableHeaders           = 1
+    TableRowEntries        = 1
+    TableRowEntry          = $UNBOUNDED
+    Text                   = $UNBOUNDED
+    TypeName               = $UNBOUNDED
+    Types                  = 1
+    View                   = $UNBOUNDED
+    ViewDefinitions        = 1
+    ViewSelectedBy         = 1
+    WideControl            = 1
+    WideEntries            = 1
+    WideEntry              = 1
+    WideItem               = $UNBOUNDED
+    Width                  = 1
+    Wrap                   = 1
+    WrapTables             = 1
+}
+
 $formatElements = Get-Content $index |
     ForEach-Object {
     if ($_ -match '\[(?<Name>\w+) Element.*]\((?<File>.+)\)') {
-        $name = $Matches.Name
-        $file = $Matches.File
-        [string[]]$children = @()
-        [string[]]$parents = @()
-        [string]$description = $null
-        [string[]]$enum = $null
-
-        Write-Debug "Element $name from file $file"
-
-        $docs = Get-Content -Raw (Join-Path (Split-Path $index -Parent) $file)
-
-        # Get documentation
-        if ($docs -match "(?smi)^# $name.*?\r?\n\r?\n(.+?)\r?\n\r?\n") {
-            $description = $Matches[1]
-        } else {
-            Write-Warning "No documentation found for element: $file"
+        [PSCustomObject]@{
+            Name = $Matches.Name
+            File = $Matches.File
         }
+    }
+} |
+    Sort-Object -Property Name -Unique |
+    ForEach-Object {
+    $name = $_.Name
+    $file = $_.File
+    $children = @()
+    [string[]]$parents = @()
+    [string]$description = $null
+    [string[]]$enum = $null
 
-        # Get enumeration values if listed in the Syntax section
-        if ($docs -match "<$name>.+,.+</$name>" -and $docs -match "<$name>(.+)</$name>") {
-            $enum = $Matches[1] -split ',' | ForEach-Object Trim
-        }
+    Write-Verbose "Element $name"
 
-        # Get child elements
-        if ($docs -match '(?smi)^### Child Elements\r?\n\r?\n(.+?)\r?\n\r?\n') {
-            $table = $Matches[1]
-            if ($table -ne 'None.') {
-                $children = $table -split '\r?\n' | Select-Object -Skip 2 | ForEach-Object {
-                    if (-not ($_ -match '^\|(?:\[|`)(\w+)')) {
-                        Write-Warning "Child elements table row did not match: $_"
-                    }
-                    $Matches[1]
+    $docs = Get-Content -Raw (Join-Path (Split-Path $index -Parent) $file)
+
+    # Get documentation
+    if ($docs -match "(?smi)^# $name.*?\r?\n\r?\n(.+?)\r?\n\r?\n") {
+        $description = $Matches[1]
+    } else {
+        Write-Warning "No documentation found for element: $file"
+    }
+
+    # Get enumeration values if listed in the Syntax section
+    if ($docs -match "<$name>.+,.+</$name>" -and $docs -match "<$name>(.+)</$name>") {
+        $enum = $Matches[1] -split ',' | ForEach-Object Trim
+    }
+
+    # Get child elements
+    if ($docs -match '(?smi)^### Child Elements\r?\n\r?\n(.+?)\r?\n\r?\n') {
+        $table = $Matches[1]
+        if ($table -ne 'None.') {
+            $children = $table -split '\r?\n' | Select-Object -Skip 2 | ForEach-Object {
+                if (-not ($_ -match '^\|(?:\[|`)(\w+).*\|(.+)\|')) {
+                    Write-Warning "Child elements table row did not match: $_"
                 }
-                Write-Debug "Found children $($children -join ', ')"
-            }
-        } else {
-            Write-Warning "Child elements did not match: $file"
-        }
-
-        # Get parent elements
-        if ($docs -match '(?smi)^### Parent Elements\r?\n\r?\n(.+?)\r?\n\r?\n') {
-            $table = $Matches[1]
-            if ($table -ne 'None.') {
-                $parents = $table -split '\r?\n' | Select-Object -Skip 2 | ForEach-Object {
-                    if (-not ($_ -match '^\|(?:\[|`)(\w+) Element')) {
-                        Write-Warning "Child elements table row did not match: $_"
-                    }
-                    $Matches[1]
+                $childName = $Matches[1]
+                $childDescription = $Matches[2]
+                $requried = ($childDescription -imatch 'Required')
+                $optional = ($childDescription -imatch 'Optional')
+                [PSCustomObject]@{
+                    Name     = $childName
+                    Required = $requried
+                    Optional = $optional
                 }
             }
-        } else {
-            Write-Warning "Parent elements did not match: $file"
-        }
-
-        [pscustomobject]@{
-            Name        = $name
-            File        = $file
-            Description = $description
-            Docs        = $docs
-            Children    = $children
-            Parents     = $parents
-            Enum        = $enum
         }
     } else {
-        Write-Verbose "Line did not match link pattern: $_"
+        Write-Warning "Child elements did not match: $file"
+    }
+
+    # Get parent elements
+    if ($docs -match '(?smi)^### Parent Elements\r?\n\r?\n(.+?)\r?\n\r?\n') {
+        $table = $Matches[1]
+        if ($table -ne 'None.') {
+            $parents = $table -split '\r?\n' | Select-Object -Skip 2 | ForEach-Object {
+                if (-not ($_ -match '^\|(?:\[|`)(\w+) Element')) {
+                    Write-Warning "Child elements table row did not match: $_"
+                }
+                $Matches[1]
+            }
+        }
+    } else {
+        Write-Warning "Parent elements did not match: $file"
+    }
+
+    [pscustomobject]@{
+        Name        = $name
+        File        = $file
+        Description = $description
+        Docs        = $docs
+        Children    = $children
+        Parents     = $parents
+        Enum        = $enum
     }
 }
 
-foreach ($formatElement in ($formatElements | Sort-Object -Property Name -Unique)) {
+
+foreach ($formatElement in $formatElements) {
     $element = $root.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
     $element.SetAttribute('name', $formatElement.Name)
 
@@ -138,9 +224,20 @@ foreach ($formatElement in ($formatElements | Sort-Object -Property Name -Unique
     } else {
         # Element with children or empty element
         $complexType = $element.AppendChild($doc.CreateElement($xs, 'complexType', $xmlSchemaNamespace))
-        foreach ($child in $formatElement.Children | Sort-Object -Unique) {
+        foreach ($child in $formatElement.Children | Sort-Object -Property Name -Unique) {
             $childElement = $complexType.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
-            $childElement.SetAttribute('ref', $child)
+            $childElement.SetAttribute('ref', $child.Name)
+            if ($child.Required) {
+                $childElement.SetAttribute('minOccurs', 1)
+            }
+            if ($child.Optional) {
+                $childElement.SetAttribute('minOccurs', 0)
+            }
+            if ($maxOccurs.ContainsKey($child.Name)) {
+                $childElement.SetAttribute('maxOccurs', $maxOccurs[$child.Name])
+            } else {
+                Write-Warning "maxOccurs unknown for element $($child.Name)"
+            }
         }
     }
 }
