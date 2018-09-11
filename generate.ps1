@@ -228,9 +228,15 @@ foreach ($formatElement in $formatElements) {
     } else {
         # Element with children or empty element
         $complexType = $element.AppendChild($doc.CreateElement($xs, 'complexType', $xmlSchemaNamespace))
+        # By default, elements in PowerShell Format files can appear an arbitrary amount of times in any order
+        # Individual restrictions per element are defined below
+        $choiceElement = $complexType.AppendChild($doc.CreateElement($xs, 'choice', $xmlSchemaNamespace))
+        $choiceElement.SetAttribute('minOccurs', 0)
+        $choiceElement.SetAttribute('maxOccurs', $UNBOUNDED)
         foreach ($child in $formatElement.Children | Sort-Object -Property Name -Unique) {
-            $childElement = $complexType.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
+            $childElement = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
             $childElement.SetAttribute('ref', $child.Name)
+
             if ($child.Required) {
                 $childElement.SetAttribute('minOccurs', 1)
             }

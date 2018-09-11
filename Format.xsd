@@ -4,13 +4,17 @@
     <xs:annotation>
       <xs:documentation>Defines how the data in a column header is displayed.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="AutoSize">
     <xs:annotation>
       <xs:documentation>Specifies whether the column size and the number of columns are adjusted based on the size of the data.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="ColumnNumber" type="xs:integer">
     <xs:annotation>
@@ -22,10 +26,12 @@
       <xs:documentation>Represents the top-level element of a formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="Controls" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="DefaultSettings" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="SelectionSets" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ViewDefinitions" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Controls" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="DefaultSettings" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="SelectionSets" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ViewDefinitions" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="Control">
@@ -33,8 +39,10 @@
       <xs:documentation>Defines a common control that can be used by all the views of the formatting file and the name that is used to reference the control.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomControl" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="Name" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomControl" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="Name" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="Controls">
@@ -42,7 +50,9 @@
       <xs:documentation>Defines the common controls that can be used by all views of the formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="Control" minOccurs="1" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Control" minOccurs="1" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="CustomControl">
@@ -50,7 +60,9 @@
       <xs:documentation>Defines the custom control that displays the new group.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomEntries" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomEntries" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="CustomControlName" type="xs:string">
@@ -63,7 +75,9 @@
       <xs:documentation>Provides the definitions of a common control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomEntry" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomEntry" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="CustomEntry">
@@ -71,8 +85,10 @@
       <xs:documentation>Provides a definition of the common control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomItem" minOccurs="1" maxOccurs="unbounded" />
-      <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomItem" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="CustomItem">
@@ -80,10 +96,12 @@
       <xs:documentation>Defines what data is displayed by the custom control view and how it is displayed. This element is used when defining how a new group of objects is displayed.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="ExpressionBinding" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded" />
-      <xs:element ref="NewLine" minOccurs="0" maxOccurs="unbounded" />
-      <xs:element ref="Text" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ExpressionBinding" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="NewLine" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Text" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="DefaultSettings">
@@ -91,27 +109,33 @@
       <xs:documentation>Defines common settings that apply to all the views of the formatting file. Common settings include displaying errors, wrapping text in tables, defining how collections are expanded, and more.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="DisplayError" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="EnumerableExpansions" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="PropertyCountForTable" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ShowError" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="WrapTables" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="DisplayError" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="EnumerableExpansions" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="PropertyCountForTable" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ShowError" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="WrapTables" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="DisplayError">
     <xs:annotation>
       <xs:documentation>Specifies that the string #ERR is displayed when an error occurs displaying a piece of data.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="EntrySelectedBy">
     <xs:annotation>
       <xs:documentation>Defines the .NET Framework types that use this custom entry or the condition that must exist for this entry to be used.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="SelectionCondition" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="SelectionSetName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="TypeName" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="SelectionCondition" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="SelectionSetName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="TypeName" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="EnumerableExpansion">
@@ -119,8 +143,10 @@
       <xs:documentation>Defines how specific .NET Framework collection objects are expanded when they are displayed in a view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Expand" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Expand" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="EnumerableExpansions">
@@ -128,14 +154,18 @@
       <xs:documentation>Defines how .NET Framework collection objects are expanded when they are displayed in a view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="EnumerableExpansion" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="EnumerableExpansion" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="EnumerateCollection">
     <xs:annotation>
       <xs:documentation>Specified that the elements of collections are displayed by the control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="Expand">
     <xs:annotation>
@@ -154,12 +184,14 @@
       <xs:documentation>Defines the data that is displayed by the control. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomControl" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="CustomControlName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="EnumerateCollection" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ItemSelectionCondition" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomControl" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="CustomControlName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="EnumerateCollection" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ItemSelectionCondition" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="FirstLineHanging" type="xs:integer">
@@ -182,11 +214,13 @@
       <xs:documentation>Defines how the data is displayed, such as shifting the data to the left or right. This element is used when defining a custom control view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomItem" minOccurs="1" maxOccurs="unbounded" />
-      <xs:element ref="FirstLineHanging" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="FirstLineIndent" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="LeftIndent" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="RightIndent" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomItem" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element ref="FirstLineHanging" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="FirstLineIndent" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="LeftIndent" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="RightIndent" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="GroupBy">
@@ -194,26 +228,32 @@
       <xs:documentation>Defines how a new group of objects is displayed. This element is used when defining a table, list, wide, or custom control view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="CustomControl" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="CustomControlName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Label" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="CustomControl" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="CustomControlName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Label" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="HideTableHeaders">
     <xs:annotation>
       <xs:documentation>Specifies that the headers of the table are not displayed.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="ItemSelectionCondition">
     <xs:annotation>
       <xs:documentation>Defines the condition that must exist for this control to be used. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="Label" type="xs:string">
@@ -231,7 +271,9 @@
       <xs:documentation>Defines a list format for the view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="ListEntries" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ListEntries" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ListEntries">
@@ -239,7 +281,9 @@
       <xs:documentation>Provides the definitions of the list view. The list view must specify one or more definitions.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="ListEntry" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ListEntry" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ListEntry">
@@ -247,8 +291,10 @@
       <xs:documentation>Provides a definition of the list view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ListItems" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ListItems" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ListItem">
@@ -256,11 +302,13 @@
       <xs:documentation>Defines the property or script whose value is displayed in a row of the list view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="FormatString" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ItemSelectionCondition" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Label" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="FormatString" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ItemSelectionCondition" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Label" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ListItems">
@@ -268,7 +316,9 @@
       <xs:documentation>Defines the properties and scripts whose values are displayed in the rows of the list view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="ListItem" minOccurs="1" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ListItem" minOccurs="1" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="Name" type="xs:string">
@@ -280,7 +330,9 @@
     <xs:annotation>
       <xs:documentation>Adds a blank line to the display of the control. This element is used when defining how a new group of objects is displayed.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="PropertyName" type="xs:string">
     <xs:annotation>
@@ -291,7 +343,9 @@
     <xs:annotation>
       <xs:documentation>Specifies how many characters the data is shifted away from the right margin. This element is used when defining how a new group of objects is displayed.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="ScriptBlock" type="xs:string">
     <xs:annotation>
@@ -303,10 +357,12 @@
       <xs:documentation>Defines the condition that must exist for this definition to be used. There is no limit to the number of selection conditions that can be specified for a wide entry definition.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="SelectionSetName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="TypeName" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="SelectionSetName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="TypeName" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="SelectionSet">
@@ -314,8 +370,10 @@
       <xs:documentation>Defines a set of .NET Framework objects that can be referenced by the name of the set.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="Name" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="Types" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Name" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="Types" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="SelectionSetName" type="xs:string">
@@ -328,23 +386,29 @@
       <xs:documentation>Defines the common sets of .NET Framework objects that can be used by all views of the formatting file. The views and controls of the formatting file can reference the complete set of objects by using only the name of the selection set.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="SelectionSet" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="SelectionSet" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ShowError">
     <xs:annotation>
       <xs:documentation>Specifies that the full error record is displayed when an error occurs while displaying a piece of data.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="TableColumnHeader">
     <xs:annotation>
       <xs:documentation>Defines the label, the width of the column, and the alignment of the label for a column of the table.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="Alignment" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Label" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Width" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Alignment" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Label" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Width" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="TableColumnItem">
@@ -352,10 +416,12 @@
       <xs:documentation>Defines the property or script whose value is displayed in the column of the row.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="Alignment" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="FormatString" maxOccurs="1" />
-      <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Alignment" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="FormatString" maxOccurs="1" />
+        <xs:element ref="PropertyName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="TableColumnItems">
@@ -363,7 +429,9 @@
       <xs:documentation>Defines the properties or scripts whose values are displayed in a row.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="TableColumnItem" minOccurs="1" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="TableColumnItem" minOccurs="1" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="TableControl">
@@ -371,10 +439,12 @@
       <xs:documentation>Defines a table format for a view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="AutoSize" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="HideTableHeaders" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="TableHeaders" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="TableRowEntries" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="AutoSize" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="HideTableHeaders" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="TableHeaders" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="TableRowEntries" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="TableHeaders">
@@ -382,7 +452,9 @@
       <xs:documentation>Defines the headers for the columns of a table.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="TableColumnHeader" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="TableColumnHeader" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="TableRowEntries">
@@ -390,7 +462,9 @@
       <xs:documentation>Defines the rows of the table.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="TableRowEntry" minOccurs="1" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="TableRowEntry" minOccurs="1" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="TableRowEntry">
@@ -398,9 +472,11 @@
       <xs:documentation>Defines the data that is displayed in a row of the table.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="EntrySelectedBy" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="TableColumnItems" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="Wrap" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="EntrySelectedBy" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="TableColumnItems" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="Wrap" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="Text" type="xs:string">
@@ -418,7 +494,9 @@
       <xs:documentation>Defines the .NET Framework objects that are in the selection set.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="TypeName" minOccurs="1" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="TypeName" minOccurs="1" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="View">
@@ -426,14 +504,16 @@
       <xs:documentation>Defines a view that displays one or more .NET Framework objects. There is no limit to the number of views that can be defined in a formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="Controls" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="CustomControl" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="GroupBy" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ListControl" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="Name" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="TableControl" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ViewSelectedBy" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="WideControl" minOccurs="0" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Controls" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="CustomControl" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="GroupBy" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ListControl" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Name" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="TableControl" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ViewSelectedBy" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="WideControl" minOccurs="0" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ViewDefinitions">
@@ -441,7 +521,9 @@
       <xs:documentation>Defines the views used to display .NET Framework objects. These views can display the properties and script values of an object  in a table format, list format, wide format, and custom control format.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="View" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="View" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="ViewSelectedBy">
@@ -449,8 +531,10 @@
       <xs:documentation>Defines the .NET Framework objects that are displayed by the view. Each view must specify at least one .NET Framework object.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="SelectionSetName" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="TypeName" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="SelectionSetName" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="TypeName" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="WideControl">
@@ -458,9 +542,11 @@
       <xs:documentation>Defines a wide (single value) list format for the view. This view displays a single property value or script value for each object.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="AutoSize" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="ColumnNumber" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="WideEntries" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="AutoSize" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="ColumnNumber" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="WideEntries" minOccurs="1" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="WideEntries">
@@ -468,7 +554,9 @@
       <xs:documentation>Provides the definitions of the wide view. The wide view must specify one or more definitions.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="WideEntry" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="WideEntry" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="WideEntry">
@@ -476,8 +564,10 @@
       <xs:documentation>Provides a definition of the wide view.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="WideItem" minOccurs="1" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="EntrySelectedBy" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="WideItem" minOccurs="1" maxOccurs="unbounded" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="WideItem">
@@ -485,9 +575,11 @@
       <xs:documentation>Defines the property or script whose value is displayed.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:element ref="FormatString" minOccurs="0" maxOccurs="1" />
-      <xs:element ref="PropertyName" maxOccurs="1" />
-      <xs:element ref="ScriptBlock" maxOccurs="1" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="FormatString" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="PropertyName" maxOccurs="1" />
+        <xs:element ref="ScriptBlock" maxOccurs="1" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="Width" type="xs:integer">
@@ -499,12 +591,16 @@
     <xs:annotation>
       <xs:documentation>Specifies that text that exceeds the column width is displayed on the next line. By default, text that exceeds the column width is truncated.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
   <xs:element name="WrapTables">
     <xs:annotation>
       <xs:documentation>Specifies that data in a table cell is moved to the next line if the data is longer than the width of the column.</xs:documentation>
     </xs:annotation>
-    <xs:complexType />
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
   </xs:element>
 </xs:schema>
