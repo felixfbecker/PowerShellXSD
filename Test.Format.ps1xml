@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Configuration xsi:noNamespaceSchemaLocation="Format.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Configuration xsi:noNamespaceSchemaLocation="Format2WithDocs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ViewDefinitions>
     <View>
       <Name>Medium</Name>
@@ -28,10 +28,10 @@
               </ListItem>
               <ListItem>
                 <Label>Patch</Label>
-                <ScriptBlock>$_.Patch | ConvertTo-ColoredPatch</ScriptBlock>
                 <ItemSelectionCondition>
                   <PropertyName>Patch</PropertyName>
                 </ItemSelectionCondition>
+                <ScriptBlock>$_.Patch | ConvertTo-ColoredPatch</ScriptBlock>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -65,10 +65,10 @@
               </ListItem>
               <ListItem>
                 <Label>Patch</Label>
-                <ScriptBlock>$_.Patch | ConvertTo-ColoredPatch</ScriptBlock>
                 <ItemSelectionCondition>
                   <PropertyName>Patch</PropertyName>
                 </ItemSelectionCondition>
+                <ScriptBlock>$_.Patch | ConvertTo-ColoredPatch</ScriptBlock>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -110,10 +110,10 @@
               </ListItem>
               <ListItem>
                 <Label>Patch</Label>
-                <ScriptBlock>$_.Patch | ConvertTo-ColoredPatch</ScriptBlock>
                 <ItemSelectionCondition>
                   <PropertyName>Patch</PropertyName>
                 </ItemSelectionCondition>
+                <ScriptBlock>$_.Patch | ConvertTo-ColoredPatch</ScriptBlock>
               </ListItem>
             </ListItems>
           </ListEntry>

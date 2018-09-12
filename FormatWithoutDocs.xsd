@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Configuration">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" name="DefaultSettings" maxOccurs="1" type="DefaultSettings" />
+        <xs:element minOccurs="0" name="SelectionSets" maxOccurs="1" type="SelectionSets" />
+        <xs:element minOccurs="0" name="Controls" maxOccurs="1" type="Controls" />
+        <xs:element minOccurs="0" name="ViewDefinitions" maxOccurs="1" type="ViewDefinitions" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="DefaultSettings">
+    <xs:all>
+      <xs:element default="false" minOccurs="0" name="ShowError" maxOccurs="1" type="Boolean" />
+      <xs:element default="false" minOccurs="0" name="DisplayError" maxOccurs="1" type="Boolean" />
+      <xs:element default="4" minOccurs="0" name="PropertyCountForTable" maxOccurs="1" type="xs:nonNegativeInteger" />
+      <xs:element default="false" minOccurs="0" name="WrapTables" maxOccurs="1" type="Boolean" />
+      <xs:element minOccurs="0" name="EnumerableExpansions" maxOccurs="1" type="EnumerableExpansions" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="EnumerableExpansions">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EnumerableExpansion" maxOccurs="unbounded" type="EnumerableExpansion" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EnumerableExpansion">
+    <xs:all>
+      <xs:element minOccurs="0" name="EntrySelectedBy" maxOccurs="1" type="EntrySelectedBy" />
+      <xs:element minOccurs="0" name="Expand" maxOccurs="1" type="Expand" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="Expand">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CoreOnly" />
+      <xs:enumeration value="EnumOnly" />
+      <xs:enumeration value="Both" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ViewDefinitions">
+    <xs:sequence>
+      <xs:element name="View" maxOccurs="unbounded" type="View" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="View">
+    <xs:complexContent>
+      <xs:extension base="ViewCommon">
+        <xs:sequence>
+          <xs:choice>
+            <xs:element name="TableControl" type="TableControl" />
+            <xs:element name="ListControl" type="ListControl" />
+            <xs:element name="WideControl" type="WideControl" />
+            <xs:element name="CustomControl" type="CustomControl" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ViewCommon">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element minOccurs="0" name="OutOfBand" type="Boolean" />
+      <xs:element name="ViewSelectedBy" type="ViewSelectedBy" />
+      <xs:element minOccurs="0" name="Controls" type="Controls" />
+      <xs:element minOccurs="0" name="GroupBy" type="GroupBy" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ViewSelectedBy">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element minOccurs="0" name="SelectionSetName" type="xs:string" />
+      <xs:element minOccurs="0" name="TypeName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TableControl">
+    <xs:all>
+      <xs:element minOccurs="0" name="AutoSize" type="Boolean" />
+      <xs:element minOccurs="0" name="HideTableHeaders" type="Boolean" />
+      <xs:element minOccurs="0" name="TableHeaders" type="TableHeaders" />
+      <xs:element name="TableRowEntries" type="TableRowEntries" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="TableHeaders">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TableColumnHeader" maxOccurs="unbounded" type="TableColumnHeader" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TableColumnHeader">
+    <xs:all>
+      <xs:element minOccurs="0" name="Label" type="Text" />
+      <xs:element minOccurs="0" name="Width" type="xs:positiveInteger" />
+      <xs:element minOccurs="0" name="Alignment" type="Alignment" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="TableColumnItems">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="TableColumnItem" maxOccurs="unbounded" type="TableColumnItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TableColumnItem">
+    <xs:sequence>
+      <xs:sequence minOccurs="0">
+        <xs:group ref="Expression" maxOccurs="1" />
+        <xs:element minOccurs="0" name="FormatString" type="xs:string" />
+      </xs:sequence>
+      <xs:element minOccurs="0" name="Alignment" type="Alignment" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:group name="Expression">
+    <xs:choice>
+      <xs:element name="PropertyName" type="xs:string" />
+      <xs:element name="ScriptBlock" type="xs:string" />
+    </xs:choice>
+  </xs:group>
+  <xs:simpleType name="Alignment">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Center" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="TableRowEntries">
+    <xs:sequence>
+      <xs:element name="TableRowEntry" maxOccurs="unbounded" type="TableRowEntry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TableRowEntry">
+    <xs:all>
+      <xs:element minOccurs="0" name="EntrySelectedBy" maxOccurs="1" type="EntrySelectedBy" />
+      <xs:element minOccurs="0" name="TableColumnItems" maxOccurs="1" type="TableColumnItems" />
+      <xs:element default="false" minOccurs="0" name="Wrap" maxOccurs="1" type="Boolean" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ListControl">
+    <xs:sequence>
+      <xs:element name="ListEntries" type="ListEntries" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ListEntries">
+    <xs:sequence>
+      <xs:element name="ListEntry" maxOccurs="unbounded" type="ListEntry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ListEntry">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntrySelectedBy" type="EntrySelectedBy" />
+      <xs:element minOccurs="1" name="ListItems" type="ListItems" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ListItems">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="ListItem" maxOccurs="unbounded" type="ListItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ListItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Label" type="Text" />
+      <xs:element minOccurs="0" name="ItemSelectionCondition" type="ItemSelectionCondition" />
+      <xs:group ref="Expression" maxOccurs="1" />
+      <xs:element minOccurs="0" name="FormatString" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WideControl">
+    <xs:sequence>
+      <xs:choice minOccurs="0">
+        <xs:element name="AutoSize" type="Boolean" />
+        <xs:element name="ColumnNumber" type="xs:positiveInteger" />
+      </xs:choice>
+      <xs:element name="WideEntries" type="WideEntries" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WideEntries">
+    <xs:sequence>
+      <xs:element name="WideEntry" maxOccurs="unbounded" type="WideEntry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WideEntry">
+    <xs:sequence>
+      <!-- "EntrySelectedBy" is optional, but it can be omitted in at most one WideEntry -->
+      <xs:element minOccurs="0" name="EntrySelectedBy" type="EntrySelectedBy" />
+      <xs:element name="WideItem" type="WideItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WideItem">
+    <xs:sequence minOccurs="0">
+      <xs:group ref="Expression" maxOccurs="1" />
+      <xs:element minOccurs="0" name="FormatString" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Controls">
+    <xs:sequence>
+      <xs:element name="Control" maxOccurs="unbounded" type="Control" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Control">
+    <xs:all>
+      <xs:element minOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="1" name="CustomControl" type="CustomControl" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="CustomControl">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="CustomEntries" type="CustomEntries" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CustomEntries">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="CustomEntry" maxOccurs="unbounded" type="CustomEntry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CustomEntry">
+    <xs:all>
+      <xs:element minOccurs="0" name="EntrySelectedBy" maxOccurs="1" type="EntrySelectedBy" />
+      <xs:element minOccurs="1" name="CustomItem" type="CustomItem" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="CustomItem">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element minOccurs="0" name="ExpressionBinding" maxOccurs="unbounded" type="ExpressionBinding" />
+      <xs:element minOccurs="0" name="NewLine" type="NewLine" />
+      <xs:element minOccurs="0" name="Text" type="Text" />
+      <xs:element minOccurs="0" name="Frame" type="Frame" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExpressionBinding">
+    <xs:sequence>
+      <xs:group ref="Expression" minOccurs="0" maxOccurs="1" />
+      <xs:element minOccurs="0" name="EnumerateCollection" type="Boolean" />
+      <xs:element minOccurs="0" name="ItemSelectionCondition" type="ItemSelectionCondition" />
+      <xs:element minOccurs="0" name="CustomControl" type="CustomControl" />
+      <xs:element minOccurs="0" name="CustomControlName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Types">
+    <xs:sequence>
+      <xs:element name="TypeName" maxOccurs="unbounded" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EntrySelectedBy">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element minOccurs="0" name="SelectionSetName" type="xs:string" />
+      <xs:element minOccurs="0" name="TypeName" type="xs:string" />
+      <xs:element minOccurs="0" name="SelectionCondition" type="SelectionCondition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SelectionCondition">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="SelectionSetName" type="xs:string" />
+        <xs:element name="TypeName" type="xs:string" />
+      </xs:choice>
+      <xs:group ref="Expression" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SelectionSets">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SelectionSet" maxOccurs="unbounded" type="SelectionSet" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SelectionSet">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="0" name="Types" type="Types" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GroupBy">
+    <xs:sequence>
+      <xs:group ref="Expression" maxOccurs="1" />
+      <xs:element minOccurs="0" name="Label" type="Text" />
+      <xs:choice minOccurs="0">
+        <xs:element name="CustomControl" type="CustomControl" />
+        <xs:element name="CustomControlName" type="xs:string" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Frame">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LeftIndent" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" name="RightIndent" type="xs:nonNegativeInteger" />
+      <xs:choice minOccurs="0">
+        <xs:element name="FirstLineHanging" type="xs:nonNegativeInteger" />
+        <xs:element name="FirstLineIndent" type="xs:nonNegativeInteger" />
+      </xs:choice>
+      <xs:element minOccurs="1" name="CustomItem" type="CustomItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ItemSelectionCondition">
+    <xs:group ref="Expression" maxOccurs="1" />
+  </xs:complexType>
+  <xs:complexType name="Text">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="ResourceId" type="xs:string" />
+        <xs:attribute name="BaseName" type="xs:string" />
+        <xs:attribute name="AssemblyName" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="Boolean">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="false" />
+      <xs:enumeration value="true" />
+      <!--empty indicates "true"-->
+      <xs:enumeration value="" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="NewLine" />
+</xs:schema>
