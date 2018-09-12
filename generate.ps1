@@ -63,6 +63,7 @@ $types = @{
 $simpleType = $root.AppendChild($doc.CreateElement($xs, 'simpleType', $xmlSchemaNamespace))
 $simpleType.SetAttribute('name', 'boolean')
 $restriction = $simpleType.AppendChild($doc.CreateElement($xs, 'restriction', $xmlSchemaNamespace))
+$restriction.SetAttribute('base', 'xs:string')
 # empty indicates "true"
 foreach ($val in 'false', 'true', '') {
     $enumeration = $restriction.AppendChild($doc.CreateElement($xs, 'enumeration', $xmlSchemaNamespace))
@@ -88,7 +89,7 @@ $maxOccurs = @{
     CustomControlName      = 1
     CustomEntries          = 1
     CustomEntry            = $UNBOUNDED
-    CustomItem             = $UNBOUNDED
+    CustomItem             = 1 # In opposite to ListItem, only one CustomItem is allowed per CustomEntry
     DefaultSettings        = 1
     DisplayError           = 1
     EntrySelectedBy        = 1
@@ -142,6 +143,20 @@ $maxOccurs = @{
     Width                  = 1
     Wrap                   = 1
     WrapTables             = 1
+}
+
+# Map from element to order indicator to use for its child elements
+# If an element is not present here, we will use xs:choice with maxOccurs=unbounded
+# xs:sequence should never occur, because the order of elements is generally not significant in Format.ps1xml files
+$orderIndicators = @{
+    Configuration       = 'all'
+    DefaultSettings     = 'all'
+    EnumerableExpansion = 'all'
+    TableControl        = 'all'
+    TableColumnHeader   = 'all'
+    TableRowEntry       = 'all'
+    Control             = 'all'
+    CustomEntry         = 'all'
 }
 
 $groups = @{
@@ -276,23 +291,34 @@ foreach ($formatElement in $formatElements) {
             $complexType # documentation container to use
         }
         # Element with children or empty element
-        # By default, elements in PowerShell Format files can appear an arbitrary amount of times in any order
-        # Individual restrictions per element are defined below
-        $choiceElement = $complexType.AppendChild($doc.CreateElement($xs, 'choice', $xmlSchemaNamespace))
-        $choiceElement.SetAttribute('minOccurs', 0)
-        $choiceElement.SetAttribute('maxOccurs', $UNBOUNDED)
+        if ($orderIndicators.ContainsKey($formatElement.Name)) {
+            $orderIndicatorName = $orderIndicators[$formatElement.Name]
+            $orderIndicatorEl = $complexType.AppendChild($doc.CreateElement($xs, $orderIndicatorName, $xmlSchemaNamespace))
+        } else {
+            # By default, elements in PowerShell Format files can appear an arbitrary amount of times in any order
+            # Individual restrictions per element are defined below
+            $orderIndicatorName = 'choice'
+            $orderIndicatorEl = $complexType.AppendChild($doc.CreateElement($xs, $orderIndicatorName, $xmlSchemaNamespace))
+            $orderIndicatorEl.SetAttribute('minOccurs', 0)
+            $orderIndicatorEl.SetAttribute('maxOccurs', $UNBOUNDED)
+        }
+
         $groupsAdded = @()
         foreach ($child in $formatElement.Children | Sort-Object -Property Name -Unique) {
+            # Handle mutually exclusive children that we defined a group for by adding a group reference (but only once)
             if ($groups.ContainsKey($child.Name)) {
                 if (-not $groupsAdded -contains $groups[$child.Name]) {
-                    $groupEl = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
+                    $groupEl = $orderIndicatorEl.AppendChild($doc.CreateElement($xs, 'group', $xmlSchemaNamespace))
                     $groupEl.SetAttribute('ref', $groups[$child.Name])
                     $groupEl.SetAttribute('maxOccurs', 1)
                     $groupEl.SetAttribute('minOccurs', 1)
+                    # Make sure to not add the same group twice
+                    $groupsAdded += $groups[$child.Name]
                 }
+                continue
             }
 
-            $childElement = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
+            $childElement = $orderIndicatorEl.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
             $childElement.SetAttribute('name', $child.Name)
 
             if ($types.ContainsKey($child.Name)) {
@@ -316,6 +342,9 @@ foreach ($formatElement in $formatElements) {
                 $childElement.SetAttribute('minOccurs', 0)
             }
             if ($maxOccurs.ContainsKey($child.Name)) {
+                if ($orderIndicatorName -eq 'all' -and $maxOccurs[$child.Name] -ne 1) {
+                    Write-Error "Invalid maxOccurs value `"$($maxOccurs[$child.Name])`" for child $($child.Name) of element $($formatElement.Name): maxOccurs can only be set to 1 inside an <xs:all>"
+                }
                 $childElement.SetAttribute('maxOccurs', $maxOccurs[$child.Name])
             } else {
                 Write-Warning "maxOccurs unknown for element $($child.Name)"
