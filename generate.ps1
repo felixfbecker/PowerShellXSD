@@ -31,21 +31,39 @@ $doc.AppendChild($root) | Out-Null
 # Manual map from element name to content type (if scalar)
 # This can't be parsed from the docs
 $types = @{
-    Name              = 'xs:string'
-    CustomControlName = 'xs:string'
-    Label             = 'xs:string'
-    ScriptBlock       = 'xs:string'
-    PropertyName      = 'xs:string'
-    FormatString      = 'xs:string'
-    TypeName          = 'xs:string'
-    Text              = 'xs:string'
-    SelectionSetName  = 'xs:string'
+    Name                = 'xs:string'
+    CustomControlName   = 'xs:string'
+    Label               = 'xs:string'
+    ScriptBlock         = 'xs:string'
+    PropertyName        = 'xs:string'
+    FormatString        = 'xs:string'
+    TypeName            = 'xs:string'
+    Text                = 'xs:string'
+    SelectionSetName    = 'xs:string'
 
-    ColumnNumber      = 'xs:integer'
-    Width             = 'xs:integer'
-    LeftIndent        = 'xs:integer'
-    FirstLineIndent   = 'xs:integer'
-    FirstLineHanging  = 'xs:integer'
+    ColumnNumber        = 'xs:integer'
+    Width               = 'xs:integer'
+    LeftIndent          = 'xs:integer'
+    FirstLineIndent     = 'xs:integer'
+    FirstLineHanging    = 'xs:integer'
+
+    ShowError           = 'boolean'
+    DisplayError        = 'boolean'
+    WrapTables          = 'boolean'
+    OutOfBand           = 'boolean'
+    AutoSize            = 'boolean'
+    HideTableHeaders    = 'boolean'
+    Wrap                = 'boolean'
+    EnumerateCollection = 'boolean'
+}
+# Special type boolean
+$simpleType = $root.AppendChild($doc.CreateElement($xs, 'simpleType', $xmlSchemaNamespace))
+$simpleType.SetAttribute('name', 'boolean')
+$restriction = $simpleType.AppendChild($doc.CreateElement($xs, 'restriction', $xmlSchemaNamespace))
+# empty indicates "true"
+foreach ($val in 'false', 'true', '') {
+    $enumeration = $restriction.AppendChild($doc.CreateElement($xs, 'enumeration', $xmlSchemaNamespace))
+    $enumeration.SetAttribute('value', $val)
 }
 
 $enums = @{
