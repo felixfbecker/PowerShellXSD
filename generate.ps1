@@ -244,9 +244,9 @@ foreach ($formatElement in $formatElements) {
             $childElement = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
             $childElement.SetAttribute('name', $child.Name)
 
-            if ($types.ContainsKey($formatElement.Name)) {
+            if ($types.ContainsKey($child.Name)) {
                 # Simple type, reference the simple type
-                $childElement.SetAttribute('type', $types[$formatElement.Name])
+                $childElement.SetAttribute('type', $types[$child.Name])
             } else {
                 # Defined type, reference the complexType that was defined for the name
                 $childElement.SetAttribute('type', $child.Name)

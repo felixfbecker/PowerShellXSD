@@ -55,7 +55,7 @@
           <xs:documentation>Required element. Defines the control.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Name" type="Name" minOccurs="1" maxOccurs="1">
+      <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Required element. Specifies the name used to reference the control.</xs:documentation>
         </xs:annotation>
@@ -135,7 +135,7 @@
           <xs:documentation>Optional element. Adds a blank line to the display of the control.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Text" type="Text" minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Text" type="xs:string" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies additional text to the data displayed by the control.</xs:documentation>
         </xs:annotation>
@@ -190,12 +190,12 @@
           <xs:documentation>Optional element. Defines the condition that must exist for this definition to be used.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="SelectionSetName" type="SelectionSetName" minOccurs="0" maxOccurs="1">
+      <xs:element name="SelectionSetName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a set of .NET Framework types that use this definition of the control view.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="TypeName" type="TypeName" minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="TypeName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a .NET Framework type that uses this definition of the control view.</xs:documentation>
         </xs:annotation>
@@ -257,7 +257,7 @@
           <xs:documentation>Optional element. Defines a control that is used by this control.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="CustomControlName" type="CustomControlName" minOccurs="0" maxOccurs="1">
+      <xs:element name="CustomControlName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the name of a common control or a view control.</xs:documentation>
         </xs:annotation>
@@ -272,12 +272,12 @@
           <xs:documentation>Optional element. Defines the condition that must exist for this common control to be used.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="PropertyName" type="PropertyName" minOccurs="0" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the .NET Framework property whose value is displayed by the common control.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" minOccurs="0" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the script whose value is displayed by the common control.</xs:documentation>
         </xs:annotation>
@@ -294,17 +294,17 @@
           <xs:documentation>Required Element</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="FirstLineHanging" type="FirstLineHanging" minOccurs="0" maxOccurs="1">
+      <xs:element name="FirstLineHanging" type="xs:integer" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies how many characters the first line of data is shifted to the left.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="FirstLineIndent" type="FirstLineIndent" minOccurs="0" maxOccurs="1">
+      <xs:element name="FirstLineIndent" type="xs:integer" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies how many characters the first line of data is shifted to the right.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="LeftIndent" type="LeftIndent" minOccurs="0" maxOccurs="1">
+      <xs:element name="LeftIndent" type="xs:integer" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies how many characters the data is shifted away from the left margin.</xs:documentation>
         </xs:annotation>
@@ -326,22 +326,22 @@
           <xs:documentation>Optional element. Defines the custom control that display new groups.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="CustomControlName" type="CustomControlName" minOccurs="0" maxOccurs="1">
+      <xs:element name="CustomControlName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the name of a control that is used to display the new group.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Label" type="Label" minOccurs="0" maxOccurs="1">
+      <xs:element name="Label" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a label that is displayed when a new group is encountered.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="PropertyName" type="PropertyName" minOccurs="0" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the .NET Framework property the starts a new group whenever its value changes.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" minOccurs="0" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the script that starts a new group whenever its value changes.</xs:documentation>
         </xs:annotation>
@@ -359,12 +359,12 @@
       <xs:documentation>Defines the condition that must exist for this control to be used. This element is used when defining a common control that can be used by all the views in the formatting file.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="PropertyName" type="PropertyName" minOccurs="0" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the .NET Framework property that triggers the condition.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" minOccurs="0" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the script that triggers the condition.</xs:documentation>
         </xs:annotation>
@@ -417,7 +417,7 @@
       <xs:documentation>Defines the property or script whose value is displayed in a row of the list view.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="FormatString" type="FormatString" minOccurs="0" maxOccurs="1">
+      <xs:element name="FormatString" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a format string that defines how the property or script value is displayed.</xs:documentation>
         </xs:annotation>
@@ -427,17 +427,17 @@
           <xs:documentation>Optional element. Defines the condition that must exist for this list item to be used.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Label" type="Label" minOccurs="0" maxOccurs="1">
+      <xs:element name="Label" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element Specifies the label that is displayed to the left of the property or script value in the row.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="PropertyName" type="PropertyName" minOccurs="0" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the .NET Framework property whose value is displayed in the row.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" minOccurs="0" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the script whose value is displayed in the row.</xs:documentation>
         </xs:annotation>
@@ -473,22 +473,22 @@
       <xs:documentation>Defines the condition that must exist for this definition to be used. There is no limit to the number of selection conditions that can be specified for a wide entry definition.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="PropertyName" type="PropertyName" minOccurs="0" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the .NET Framework property that triggers the condition.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" minOccurs="0" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the script block that triggers the condition.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="SelectionSetName" type="SelectionSetName" minOccurs="0" maxOccurs="1">
+      <xs:element name="SelectionSetName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the set of .NET Framework types that triggers the condition.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="TypeName" type="TypeName" minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="TypeName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a .NET Framework type that triggers the condition.</xs:documentation>
         </xs:annotation>
@@ -500,7 +500,7 @@
       <xs:documentation>Defines a set of .NET Framework objects that can be referenced by the name of the set.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="Name" type="Name" minOccurs="1" maxOccurs="1">
+      <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Required element. Specifies the name used to reference the selection set.</xs:documentation>
         </xs:annotation>
@@ -540,12 +540,12 @@
           <xs:documentation>Optional element. Specifies how the label of the column is displayed. If no alignment is specified, the label is aligned on the left.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Label" type="Label" minOccurs="0" maxOccurs="1">
+      <xs:element name="Label" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Defines the label that is displayed at the top of the column. If no label is specified, the name of the property whose value is displayed in the rows is used.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Width" type="Width" minOccurs="1" maxOccurs="1">
+      <xs:element name="Width" type="xs:integer" minOccurs="1" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Required element. Specifies the width (in characters) of the column.</xs:documentation>
         </xs:annotation>
@@ -562,17 +562,17 @@
           <xs:documentation>Optional element. Defines how the data in a column of the row is displayed.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="FormatString" type="FormatString" maxOccurs="1">
+      <xs:element name="FormatString" type="xs:string" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Specifies a format pattern that is used to format the data in the column of the row.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="PropertyName" type="PropertyName" minOccurs="0" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the name of the property whose value is displayed.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" minOccurs="0" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the script whose value is displayed in the column of a row.</xs:documentation>
         </xs:annotation>
@@ -669,7 +669,7 @@
       <xs:documentation>Defines the .NET Framework objects that are in the selection set.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="TypeName" type="TypeName" minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="TypeName" type="xs:string" minOccurs="1" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Required element. Specifies the .NET Framework object that belongs to the selection set.</xs:documentation>
         </xs:annotation>
@@ -701,7 +701,7 @@
           <xs:documentation>Optional element. Defines a list format for the view.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Name" type="Name" minOccurs="1" maxOccurs="1">
+      <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Required element. Specifies the name used to reference the view.</xs:documentation>
         </xs:annotation>
@@ -740,12 +740,12 @@
       <xs:documentation>Defines the .NET Framework objects that are displayed by the view. Each view must specify at least one .NET Framework object.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="SelectionSetName" type="SelectionSetName" minOccurs="0" maxOccurs="1">
+      <xs:element name="SelectionSetName" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a set of .NET Framework objects that are displayed by the view.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="TypeName" type="TypeName" minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="TypeName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a .NET Framework object that is displayed by the view.</xs:documentation>
         </xs:annotation>
@@ -762,7 +762,7 @@
           <xs:documentation>Optional element. Specifies whether the column size and the number of columns are adjusted based on the size of the data.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ColumnNumber" type="ColumnNumber" minOccurs="0" maxOccurs="1">
+      <xs:element name="ColumnNumber" type="xs:integer" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the number of columns displayed in the wide view.</xs:documentation>
         </xs:annotation>
@@ -808,17 +808,17 @@
       <xs:documentation>Defines the property or script whose value is displayed.</xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="FormatString" type="FormatString" minOccurs="0" maxOccurs="1">
+      <xs:element name="FormatString" type="xs:string" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies a format pattern that defines how the property or script value is displayed in the view.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="PropertyName" type="PropertyName" maxOccurs="1">
+      <xs:element name="PropertyName" type="xs:string" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Specifies the property of the object whose value is displayed in the wide view.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ScriptBlock" type="ScriptBlock" maxOccurs="1">
+      <xs:element name="ScriptBlock" type="xs:string" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Specifies the script whose value is displayed in the wide view.</xs:documentation>
         </xs:annotation>
