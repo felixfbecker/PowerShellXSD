@@ -48,6 +48,11 @@ $types = @{
     FirstLineHanging  = 'xs:integer'
 }
 
+$enums = @{
+    Alignment = 'Left', 'Right', 'Center'
+    Expand    = 'CoreOnly', 'EnumOnly', 'Both'
+}
+
 $UNBOUNDED = 'unbounded'
 
 # We can get minOccurs from required/optional hints, but we don't know about maxOccurs
@@ -134,7 +139,6 @@ $formatElements = Get-Content $index |
     $children = @()
     [string[]]$parents = @()
     [string]$description = $null
-    [string[]]$enum = $null
 
     Write-Verbose "Element $name"
 
@@ -142,14 +146,9 @@ $formatElements = Get-Content $index |
 
     # Get documentation
     if ($docs -match "(?smi)^# $name.*?\r?\n\r?\n(.+?)\r?\n\r?\n") {
-        $description = $Matches[1]
+        $description = $Matches[1] -ireplace '<[^>]+>', '' # strip HTML
     } else {
         Write-Warning "No documentation found for element: $file"
-    }
-
-    # Get enumeration values if listed in the Syntax section
-    if ($docs -match "<$name>.+,.+</$name>" -and $docs -match "<$name>(.+)</$name>") {
-        $enum = $Matches[1] -split ',' | ForEach-Object Trim
     }
 
     # Get child elements
@@ -161,13 +160,14 @@ $formatElements = Get-Content $index |
                     Write-Warning "Child elements table row did not match: $_"
                 }
                 $childName = $Matches[1]
-                $childDescription = $Matches[2]
+                $childDescription = $Matches[2] -ireplace '<[^>]+>', '' # strip HTML like <br> tags
                 $requried = ($childDescription -imatch 'Required')
                 $optional = ($childDescription -imatch 'Optional')
                 [PSCustomObject]@{
-                    Name     = $childName
-                    Required = $requried
-                    Optional = $optional
+                    Name        = $childName
+                    Description = $childDescription
+                    Required    = $requried
+                    Optional    = $optional
                 }
             }
         }
@@ -197,37 +197,44 @@ $formatElements = Get-Content $index |
         Docs        = $docs
         Children    = $children
         Parents     = $parents
-        Enum        = $enum
     }
 }
 
 
 foreach ($formatElement in $formatElements) {
-    $element = $root.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
-    $element.SetAttribute('name', $formatElement.Name)
-
-    # Add documentation
-    if ($formatElement.Description) {
-        $annotation = $element.AppendChild($doc.CreateElement($xs, 'annotation', $xmlSchemaNamespace))
-        $documentationEl = $annotation.AppendChild($doc.CreateElement($xs, 'documentation', $xmlSchemaNamespace))
-        $documentationEl.InnerText = $formatElement.Description
-    }
 
     if ($types.ContainsKey($formatElement.Name)) {
         # Built-in type like xs:string
-        $element.SetAttribute('type', $types[$formatElement.Name])
-    } elseif ($formatElement.Enum) {
-        # String enum (Expand, Align)
-        $simpleType = $element.AppendChild($doc.CreateElement($xs, 'simpleType', $xmlSchemaNamespace))
+        # Will be set on the xs:element directly
+        continue
+    }
+
+    $documentationContainer = if ($enums.ContainsKey($formatElement.Name)) {
+        # String enum (Expand, Alignment)
+        $simpleType = $root.AppendChild($doc.CreateElement($xs, 'simpleType', $xmlSchemaNamespace))
+        $simpleType.SetAttribute('name', $formatElement.Name)
         $restriction = $simpleType.AppendChild($doc.CreateElement($xs, 'restriction', $xmlSchemaNamespace))
         $restriction.SetAttribute('base', 'xs:string')
-        foreach ($value in $formatElement.Enum) {
+        foreach ($value in $enums[$formatElement.Name]) {
             $enumEl = $restriction.AppendChild($doc.CreateElement($xs, 'enumeration', $xmlSchemaNamespace))
             $enumEl.SetAttribute('value', $value)
         }
+        $simpleType # documentation container to use
     } else {
+        $complexType = $doc.CreateElement($xs, 'complexType', $xmlSchemaNamespace)
+        if ($formatElement.Parents.Count -eq 0) {
+            # The element is a top-level element
+            $elementElement = $root.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
+            $elementElement.SetAttribute('name', $formatElement.Name)
+            $elementElement.AppendChild($complexType) | Out-Null
+            $elementElement # documentation container to use
+        } else {
+            # The element is a child element of another element and not allowed top-level
+            $root.AppendChild($complexType) | Out-Null
+            $complexType.SetAttribute('name', $formatElement.Name)
+            $complexType # documentation container to use
+        }
         # Element with children or empty element
-        $complexType = $element.AppendChild($doc.CreateElement($xs, 'complexType', $xmlSchemaNamespace))
         # By default, elements in PowerShell Format files can appear an arbitrary amount of times in any order
         # Individual restrictions per element are defined below
         $choiceElement = $complexType.AppendChild($doc.CreateElement($xs, 'choice', $xmlSchemaNamespace))
@@ -235,7 +242,21 @@ foreach ($formatElement in $formatElements) {
         $choiceElement.SetAttribute('maxOccurs', $UNBOUNDED)
         foreach ($child in $formatElement.Children | Sort-Object -Property Name -Unique) {
             $childElement = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
-            $childElement.SetAttribute('ref', $child.Name)
+            $childElement.SetAttribute('name', $child.Name)
+
+            if ($types.ContainsKey($formatElement.Name)) {
+                # Simple type, reference the simple type
+                $childElement.SetAttribute('type', $types[$formatElement.Name])
+            } else {
+                # Defined type, reference the complexType that was defined for the name
+                $childElement.SetAttribute('type', $child.Name)
+            }
+
+            if ($child.Description) {
+                $annotation = $childElement.AppendChild($doc.CreateElement($xs, 'annotation', $xmlSchemaNamespace))
+                $documentationEl = $annotation.AppendChild($doc.CreateElement($xs, 'documentation', $xmlSchemaNamespace))
+                $documentationEl.InnerText = $child.Description
+            }
 
             if ($child.Required) {
                 $childElement.SetAttribute('minOccurs', 1)
@@ -249,6 +270,13 @@ foreach ($formatElement in $formatElements) {
                 Write-Warning "maxOccurs unknown for element $($child.Name)"
             }
         }
+    }
+
+    # Add documentation
+    if ($formatElement.Description) {
+        $annotation = $documentationContainer.PrependChild($doc.CreateElement($xs, 'annotation', $xmlSchemaNamespace))
+        $documentationEl = $annotation.AppendChild($doc.CreateElement($xs, 'documentation', $xmlSchemaNamespace))
+        $documentationEl.InnerText = $formatElement.Description
     }
 }
 
