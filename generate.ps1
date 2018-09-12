@@ -28,6 +28,8 @@ $attribute.InnerText = 'http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/
 $root.SetAttributeNode($attribute) | Out-Null
 $doc.AppendChild($root) | Out-Null
 
+$root.AppendChild($doc.CreateComment(' Custom type definitions ')) | Out-Null
+
 # Manual map from element name to content type (if scalar)
 # This can't be parsed from the docs
 $types = @{
@@ -141,6 +143,22 @@ $maxOccurs = @{
     WrapTables             = 1
 }
 
+$groups = @{
+    # PropertyName, ScriptBlock and FormatString are mutually exclusive
+    # These will always be referenced through the Expression group with minOccurs=1 maxOccurs=1
+    ScriptBlock  = 'Expression'
+    PropertyName = 'Expression'
+    FormatString = 'Expression'
+}
+$simpleType = $root.AppendChild($doc.CreateElement($xs, 'group', $xmlSchemaNamespace))
+$simpleType.SetAttribute('name', 'Expression')
+$choice = $simpleType.AppendChild($doc.CreateElement($xs, 'choice', $xmlSchemaNamespace))
+foreach ($elementName in 'PropertyName', 'ScriptBlock', 'FormatString') {
+    $el = $choice.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
+    $el.SetAttribute('name', $elementName)
+    $el.SetAttribute('type', $types[$elementName])
+}
+
 $formatElements = Get-Content $index |
     ForEach-Object {
     if ($_ -match '\[(?<Name>\w+) Element.*]\((?<File>.+)\)') {
@@ -181,6 +199,9 @@ $formatElements = Get-Content $index |
                 $childDescription = $Matches[2] -ireplace '<[^>]+>', '' # strip HTML like <br> tags
                 $requried = ($childDescription -imatch 'Required')
                 $optional = ($childDescription -imatch 'Optional')
+                if ($requried -eq $optional) {
+                    Write-Warning "Child element $childName of $name is neither required nor optional"
+                }
                 [PSCustomObject]@{
                     Name        = $childName
                     Description = $childDescription
@@ -242,6 +263,7 @@ foreach ($formatElement in $formatElements) {
         $complexType = $doc.CreateElement($xs, 'complexType', $xmlSchemaNamespace)
         if ($formatElement.Parents.Count -eq 0) {
             # The element is a top-level element
+            $root.AppendChild($doc.CreateComment(' Top-level element ')) | Out-Null
             $elementElement = $root.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
             $elementElement.SetAttribute('name', $formatElement.Name)
             $elementElement.AppendChild($complexType) | Out-Null
@@ -258,7 +280,17 @@ foreach ($formatElement in $formatElements) {
         $choiceElement = $complexType.AppendChild($doc.CreateElement($xs, 'choice', $xmlSchemaNamespace))
         $choiceElement.SetAttribute('minOccurs', 0)
         $choiceElement.SetAttribute('maxOccurs', $UNBOUNDED)
+        $groupsAdded = @()
         foreach ($child in $formatElement.Children | Sort-Object -Property Name -Unique) {
+            if ($groups.ContainsKey($child.Name)) {
+                if (-not $groupsAdded -contains $groups[$child.Name]) {
+                    $groupEl = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
+                    $groupEl.SetAttribute('ref', $groups[$child.Name])
+                    $groupEl.SetAttribute('maxOccurs', 1)
+                    $groupEl.SetAttribute('minOccurs', 1)
+                }
+            }
+
             $childElement = $choiceElement.AppendChild($doc.CreateElement($xs, 'element', $xmlSchemaNamespace))
             $childElement.SetAttribute('name', $child.Name)
 
