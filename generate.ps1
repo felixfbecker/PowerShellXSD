@@ -43,11 +43,12 @@ $types = @{
     Text                = 'xs:string'
     SelectionSetName    = 'xs:string'
 
-    ColumnNumber        = 'xs:integer'
-    Width               = 'xs:integer'
-    LeftIndent          = 'xs:integer'
-    FirstLineIndent     = 'xs:integer'
-    FirstLineHanging    = 'xs:integer'
+    ColumnNumber        = 'xs:positiveInteger'
+    Width               = 'xs:positiveInteger'
+
+    LeftIndent          = 'xs:nonNegativeInteger'
+    FirstLineIndent     = 'xs:nonNegativeInteger'
+    FirstLineHanging    = 'xs:nonNegativeInteger'
 
     ShowError           = 'boolean'
     DisplayError        = 'boolean'

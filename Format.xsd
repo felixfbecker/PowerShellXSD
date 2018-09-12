@@ -294,17 +294,17 @@
           <xs:documentation>Required Element</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="FirstLineHanging" type="xs:integer" minOccurs="0" maxOccurs="1">
+      <xs:element name="FirstLineHanging" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies how many characters the first line of data is shifted to the left.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="FirstLineIndent" type="xs:integer" minOccurs="0" maxOccurs="1">
+      <xs:element name="FirstLineIndent" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies how many characters the first line of data is shifted to the right.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="LeftIndent" type="xs:integer" minOccurs="0" maxOccurs="1">
+      <xs:element name="LeftIndent" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies how many characters the data is shifted away from the left margin.</xs:documentation>
         </xs:annotation>
@@ -542,7 +542,7 @@
           <xs:documentation>Optional element. Defines the label that is displayed at the top of the column. If no label is specified, the name of the property whose value is displayed in the rows is used.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="Width" type="xs:integer" minOccurs="1" maxOccurs="1">
+      <xs:element name="Width" type="xs:positiveInteger" minOccurs="1" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Required element. Specifies the width (in characters) of the column.</xs:documentation>
         </xs:annotation>
@@ -762,7 +762,7 @@
           <xs:documentation>Optional element. Specifies whether the column size and the number of columns are adjusted based on the size of the data.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="ColumnNumber" type="xs:integer" minOccurs="0" maxOccurs="1">
+      <xs:element name="ColumnNumber" type="xs:positiveInteger" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>Optional element. Specifies the number of columns displayed in the wide view.</xs:documentation>
         </xs:annotation>
