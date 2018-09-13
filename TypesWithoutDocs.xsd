@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Types">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Type" maxOccurs="unbounded" type="Type" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Type">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element minOccurs="0" name="Members" type="Members" />
+      <xs:element minOccurs="0" name="TypeConverter" type="TypeConverter" />
+      <xs:element minOccurs="0" name="TypeAdapter" type="TypeAdapter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Members">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element minOccurs="0" name="NoteProperty" maxOccurs="unbounded" type="NoteProperty" />
+      <xs:element minOccurs="0" name="AliasProperty" maxOccurs="unbounded" type="AliasProperty" />
+      <xs:element minOccurs="0" name="ScriptProperty" maxOccurs="unbounded" type="ScriptProperty" />
+      <xs:element minOccurs="0" name="CodeProperty" maxOccurs="unbounded" type="CodeProperty" />
+      <xs:element minOccurs="0" name="ScriptMethod" maxOccurs="unbounded" type="ScriptMethod" />
+      <xs:element minOccurs="0" name="CodeMethod" maxOccurs="unbounded" type="CodeMethod" />
+      <xs:element minOccurs="0" name="PropertySet" maxOccurs="unbounded" type="PropertySet" />
+      <xs:element minOccurs="0" name="MemberSet" maxOccurs="unbounded" type="MemberSet" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TypeConverter">
+    <xs:sequence>
+      <xs:element name="TypeName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TypeAdapter">
+    <xs:sequence>
+      <xs:element name="TypeName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="NoteProperty">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="Value" type="xs:string" />
+      <xs:element minOccurs="0" name="TypeName" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="IsHidden" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="AliasProperty">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="ReferencedMemberName" type="xs:string" />
+      <xs:element minOccurs="0" name="TypeName" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="IsHidden" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="ScriptProperty">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element minOccurs="0" name="GetScriptBlock" type="xs:string" />
+      <xs:element minOccurs="0" name="SetScriptBlock" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="IsHidden" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="CodeProperty">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="GetCodeReference" type="GetCodeReference" />
+      <xs:element minOccurs="0" name="SetCodeReference" type="SetCodeReference" />
+    </xs:sequence>
+    <xs:attribute name="IsHidden" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="GetCodeReference">
+    <xs:sequence>
+      <xs:element name="TypeName" type="xs:string" />
+      <xs:element name="MethodName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SetCodeReference">
+    <xs:sequence>
+      <xs:element name="TypeName" type="xs:string" />
+      <xs:element name="MethodName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ScriptMethod">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="Script" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CodeMethod">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="CodeReference" type="CodeReference" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CodeReference">
+    <xs:sequence>
+      <xs:element name="TypeName" type="xs:string" />
+      <xs:element name="MethodName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PropertySet">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="ReferencedProperties" type="ReferencedProperties" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ReferencedProperties">
+    <xs:sequence>
+      <xs:element name="Name" maxOccurs="unbounded" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MemberSet">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element minOccurs="0" name="InheritMembers" type="xs:boolean" />
+      <xs:element name="Members" type="Members" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

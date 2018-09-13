@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Types xsi:noNamespaceSchemaLocation="Types.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Type>
+    <Name>KubeClient.Models.PodV1</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Namespace</Name>
+        <GetScriptBlock>$this.Metadata.Namespace</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Restarts</Name>
+        <GetScriptBlock>(($this.Status.ContainerStatuses + $this.Status.InitContainerStatuses).RestartCount | Measure-Object -Sum).Sum</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
