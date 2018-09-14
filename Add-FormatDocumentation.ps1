@@ -132,6 +132,12 @@ foreach ($topLevelNode in $doc.schema.ChildNodes) {
             Write-Error "Could not find data for child `"$($childElement.name)`" of element `"$($elementData.Name)`""
             continue
         }
+        if ($childData.Description -match 'Optional' -and $childElement.GetAttribute('minOccurs') -ne 0) {
+            Write-Warning "Child $($childElement.name) of element $($elementData.Name) documentation says `"Optional`", but minOccurs is $($childElement.GetAttribute('minOccurs')) (expected 0)"
+        }
+        if ($childData.Description -match 'Required' -and $childElement.GetAttribute('minOccurs') -ne 1) {
+            Write-Warning "Child $($childElement.name) of element $($elementData.Name) documentation says `"Required`", but minOccurs is $($childElement.GetAttribute('minOccurs')) (expected 1)"
+        }
         $annotation = $childElement.PrependChild($doc.CreateElement($xs, 'annotation', $xmlSchemaNamespace))
         $documentationEl = $annotation.AppendChild($doc.CreateElement($xs, 'documentation', $xmlSchemaNamespace))
         $documentationEl.InnerText = $childData.Description
