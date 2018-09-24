@@ -59,6 +59,7 @@ try {
     $using += $xmlWriter
     $doc.Save($xmlWriter)
     $xmlWriter.Close()
+    $streamWriter.Write("`n") # write final new line
 } finally {
     $using | ForEach-Object Dispose
 }
