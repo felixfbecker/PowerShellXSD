@@ -13,7 +13,7 @@
         </xs:element>
         <xs:element minOccurs="0" name="SelectionSets" maxOccurs="1" type="SelectionSets">
           <xs:annotation>
-            <xs:documentation>Optional element. Defines the common sets of .NET Framework objects that can be used by all views of the formatting file.</xs:documentation>
+            <xs:documentation>Optional element. Defines the common sets of .NET objects that can be used by all views of the formatting file.</xs:documentation>
           </xs:annotation>
         </xs:element>
         <xs:element minOccurs="0" name="Controls" maxOccurs="1" type="Controls">
@@ -56,31 +56,31 @@
       </xs:element>
       <xs:element minOccurs="0" name="EnumerableExpansions" maxOccurs="1" type="EnumerableExpansions">
         <xs:annotation>
-          <xs:documentation>Optional element. Defines the different ways that .NET Framework objects are expanded when they are displayed in a view.</xs:documentation>
+          <xs:documentation>Optional element. Defines the different ways that .NET objects are expanded when they are displayed in a view.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:all>
   </xs:complexType>
   <xs:complexType name="EnumerableExpansions">
     <xs:annotation>
-      <xs:documentation>Defines how .NET Framework collection objects are expanded when they are displayed in a view.</xs:documentation>
+      <xs:documentation>Defines how .NET collection objects are expanded when they are displayed in a view.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="0" name="EnumerableExpansion" maxOccurs="unbounded" type="EnumerableExpansion">
         <xs:annotation>
-          <xs:documentation>Optional element. Defines the specific .NET Framework collection objects that are expanded when they are displayed in a view.</xs:documentation>
+          <xs:documentation>Optional element. Defines the specific .NET collection objects that are expanded when they are displayed in a view.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="EnumerableExpansion">
     <xs:annotation>
-      <xs:documentation>Defines how specific .NET Framework collection objects are expanded when they are displayed in a view.</xs:documentation>
+      <xs:documentation>Defines how specific .NET collection objects are expanded when they are displayed in a view.</xs:documentation>
     </xs:annotation>
     <xs:all>
       <xs:element minOccurs="0" name="EntrySelectedBy" maxOccurs="1" type="EntrySelectedBy">
         <xs:annotation>
-          <xs:documentation>Optional element. Defines which .NET Framework collection objects are expanded by this definition.</xs:documentation>
+          <xs:documentation>Optional element. Defines which .NET collection objects are expanded by this definition.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="Expand" maxOccurs="1" type="Expand">
@@ -102,19 +102,19 @@
   </xs:simpleType>
   <xs:complexType name="ViewDefinitions">
     <xs:annotation>
-      <xs:documentation>Defines the views used to display .NET Framework objects. These views can display the properties and script values of an object  in a table format, list format, wide format, and custom control format.</xs:documentation>
+      <xs:documentation>Defines the views used to display .NET objects. These views can display the properties and script values of an object  in a table format, list format, wide format, and custom control format.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="View" maxOccurs="unbounded" type="View">
         <xs:annotation>
-          <xs:documentation>Defines a view that is used to display one or more .NET Framework objects.</xs:documentation>
+          <xs:documentation>Defines a view that is used to display one or more .NET objects.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="View">
     <xs:annotation>
-      <xs:documentation>Defines a view that displays one or more .NET Framework objects. There is no limit to the number of views that can be defined in a formatting file.</xs:documentation>
+      <xs:documentation>Defines a view that displays one or more .NET objects. There is no limit to the number of views that can be defined in a formatting file.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="ViewCommon">
@@ -156,17 +156,17 @@
   </xs:complexType>
   <xs:complexType name="ViewSelectedBy">
     <xs:annotation>
-      <xs:documentation>Defines the .NET Framework objects that are displayed by the view. Each view must specify at least one .NET Framework object.</xs:documentation>
+      <xs:documentation>Defines the .NET objects that are displayed by the view. Each view must specify at least one .NET object.</xs:documentation>
     </xs:annotation>
     <xs:sequence minOccurs="1" maxOccurs="unbounded">
       <xs:element minOccurs="0" name="SelectionSetName" type="xs:string">
         <xs:annotation>
-          <xs:documentation>Optional element. Specifies a set of .NET Framework objects that are displayed by the view.</xs:documentation>
+          <xs:documentation>Optional element. Specifies a set of .NET objects that are displayed by the view.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="TypeName" type="xs:string">
         <xs:annotation>
-          <xs:documentation>Optional element. Specifies a .NET Framework object that is displayed by the view.</xs:documentation>
+          <xs:documentation>Optional element. Specifies a .NET object that is displayed by the view.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
@@ -345,7 +345,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="EntrySelectedBy" type="EntrySelectedBy">
         <xs:annotation>
-          <xs:documentation>Optional element. Defines the .NET Framework objects that use this list view definition or the condition that must exist for this definition to be used.</xs:documentation>
+          <xs:documentation>Optional element. Defines the .NET objects that use this list view definition or the condition that must exist for this definition to be used.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="1" name="ListItems" type="ListItems">
@@ -434,7 +434,7 @@
       <!-- "EntrySelectedBy" is optional, but it can be omitted in at most one WideEntry -->
       <xs:element minOccurs="0" name="EntrySelectedBy" type="EntrySelectedBy">
         <xs:annotation>
-          <xs:documentation>Optional element. Defines the .NET Framework types that use this wide entry definition or the condition that must exist for this definition to be used.</xs:documentation>
+          <xs:documentation>Optional element. Defines the .NET types that use this wide entry definition or the condition that must exist for this definition to be used.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="WideItem" type="WideItem">
@@ -517,7 +517,7 @@
     <xs:all>
       <xs:element minOccurs="0" name="EntrySelectedBy" maxOccurs="1" type="EntrySelectedBy">
         <xs:annotation>
-          <xs:documentation>Optional element. Defines the .NET Framework types that use the definition of the common control or the condition that must exist for this control to be used.</xs:documentation>
+          <xs:documentation>Optional element. Defines the .NET types that use the definition of the common control or the condition that must exist for this control to be used.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="1" name="CustomItem" type="CustomItem">
@@ -584,29 +584,29 @@
   </xs:complexType>
   <xs:complexType name="Types">
     <xs:annotation>
-      <xs:documentation>Defines the .NET Framework objects that are in the selection set.</xs:documentation>
+      <xs:documentation>Defines the .NET objects that are in the selection set.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="TypeName" maxOccurs="unbounded" type="xs:string">
         <xs:annotation>
-          <xs:documentation>Required element. Specifies the .NET Framework object that belongs to the selection set.</xs:documentation>
+          <xs:documentation>Required element. Specifies the .NET object that belongs to the selection set.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="EntrySelectedBy">
     <xs:annotation>
-      <xs:documentation>Defines the .NET Framework types that use this custom entry or the condition that must exist for this entry to be used.</xs:documentation>
+      <xs:documentation>Defines the .NET types that use this custom entry or the condition that must exist for this entry to be used.</xs:documentation>
     </xs:annotation>
     <xs:sequence minOccurs="1" maxOccurs="unbounded">
       <xs:element minOccurs="0" name="SelectionSetName" type="xs:string">
         <xs:annotation>
-          <xs:documentation>Optional element. Specifies a set of .NET Framework types that use this definition of the control view.</xs:documentation>
+          <xs:documentation>Optional element. Specifies a set of .NET types that use this definition of the control view.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="TypeName" type="xs:string">
         <xs:annotation>
-          <xs:documentation>Optional element. Specifies a .NET Framework type that uses this definition of the control view.</xs:documentation>
+          <xs:documentation>Optional element. Specifies a .NET type that uses this definition of the control view.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="SelectionCondition" type="SelectionCondition">
@@ -624,12 +624,12 @@
       <xs:choice>
         <xs:element name="SelectionSetName" type="xs:string">
           <xs:annotation>
-            <xs:documentation>Optional element. Specifies the set of .NET Framework types that triggers the condition.</xs:documentation>
+            <xs:documentation>Optional element. Specifies the set of .NET types that triggers the condition.</xs:documentation>
           </xs:annotation>
         </xs:element>
         <xs:element name="TypeName" type="xs:string">
           <xs:annotation>
-            <xs:documentation>Optional element. Specifies a .NET Framework type that triggers the condition.</xs:documentation>
+            <xs:documentation>Optional element. Specifies a .NET type that triggers the condition.</xs:documentation>
           </xs:annotation>
         </xs:element>
       </xs:choice>
@@ -638,19 +638,19 @@
   </xs:complexType>
   <xs:complexType name="SelectionSets">
     <xs:annotation>
-      <xs:documentation>Defines the common sets of .NET Framework objects that can be used by all views of the formatting file. The views and controls of the formatting file can reference the complete set of objects by using only the name of the selection set.</xs:documentation>
+      <xs:documentation>Defines the common sets of .NET objects that can be used by all views of the formatting file. The views and controls of the formatting file can reference the complete set of objects by using only the name of the selection set.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="0" name="SelectionSet" maxOccurs="unbounded" type="SelectionSet">
         <xs:annotation>
-          <xs:documentation>Required element. Defines a single set of .NET Framework objects that can be referenced by the name of the set.</xs:documentation>
+          <xs:documentation>Required element. Defines a single set of .NET objects that can be referenced by the name of the set.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="SelectionSet">
     <xs:annotation>
-      <xs:documentation>Defines a set of .NET Framework objects that can be referenced by the name of the set.</xs:documentation>
+      <xs:documentation>Defines a set of .NET objects that can be referenced by the name of the set.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="1" name="Name" type="xs:string">
@@ -660,7 +660,7 @@
       </xs:element>
       <xs:element minOccurs="0" name="Types" type="Types">
         <xs:annotation>
-          <xs:documentation>Required element. Defines the .NET Framework objects that are in the selection set.</xs:documentation>
+          <xs:documentation>Required element. Defines the .NET objects that are in the selection set.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
